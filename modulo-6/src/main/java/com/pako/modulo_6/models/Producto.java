@@ -56,4 +56,15 @@ public class Producto {
   public void setEnStock(boolean enStock) {
     this.enStock = enStock;
   }
+
+  @Override
+  public String toString() {
+    return "Producto{" +
+            "id=" + id +
+            ", nombre='" + nombre + '\'' +
+            ", descripcion='" + descripcion + '\'' +
+            ", precio=" + precio +
+            ", enStock=" + enStock +
+            '}';
+  }
 }
