@@ -1,24 +1,30 @@
-package com.pako.modulo_6.dtos;
 
+package com.pako.modulo_6.dtos;
 
 public class UsuarioDTO {
   private int id;
   private String nombre;
+  private int edad; // Incluye el campo edad
 
-  public UsuarioDTO(int id, String nombre) {
+  public UsuarioDTO(int id, String nombre, int edad) {
     this.id = id;
     this.nombre = nombre;
+    this.edad = edad; // Asegúrate de asignar este valor
   }
 
   public UsuarioDTO() {
   }
 
   public int getId() {
-    return this.id;
+    return id;
   }
 
   public String getNombre() {
-    return this.nombre;
+    return nombre;
+  }
+
+  public int getEdad() {
+    return edad; // Getter para edad
   }
 
   public void setId(int id) {
@@ -29,32 +35,12 @@ public class UsuarioDTO {
     this.nombre = nombre;
   }
 
-  public boolean equals(final Object o) {
-    if (o == this) return true;
-    if (!(o instanceof UsuarioDTO)) return false;
-    final UsuarioDTO other = (UsuarioDTO) o;
-    if (!other.canEqual((Object) this)) return false;
-    if (this.getId() != other.getId()) return false;
-    final Object this$nombre = this.getNombre();
-    final Object other$nombre = other.getNombre();
-    if (this$nombre == null ? other$nombre != null : !this$nombre.equals(other$nombre)) return false;
-    return true;
+  public void setEdad(int edad) {
+    this.edad = edad; // Setter para edad
   }
 
-  protected boolean canEqual(final Object other) {
-    return other instanceof UsuarioDTO;
-  }
-
-  public int hashCode() {
-    final int PRIME = 59;
-    int result = 1;
-    result = result * PRIME + this.getId();
-    final Object $nombre = this.getNombre();
-    result = result * PRIME + ($nombre == null ? 43 : $nombre.hashCode());
-    return result;
-  }
-
+  @Override
   public String toString() {
-    return "UsuarioDTO(id=" + this.getId() + ", nombre=" + this.getNombre() + ")";
+    return "UsuarioDTO{id=" + id + ", nombre='" + nombre + "', edad=" + edad + "}";
   }
 }
