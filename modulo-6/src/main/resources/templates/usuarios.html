@@ -1,29 +1,33 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lista de Usuarios</title>
-    <!-- Enlace de Boostrap -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container">
-    <h1 class="mt-5">Lista de Usuarios</h1>
+<div class="container mt-5">
+    <h1>Lista de Usuarios</h1>
     <table class="table">
         <thead>
         <tr>
             <th>ID</th>
             <th>Nombre</th>
+            <th>Edad</th>
+            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="usuario : ${usuarios}">
             <td th:text="${usuario.id}"></td>
             <td th:text="${usuario.nombre}"></td>
+            <td th:text="${usuario.edad}"></td>
+            <td><a th:href="@{/usuarios/{id}(id=${usuario.id})}" class="btn btn-info">Ver</a></td>
         </tr>
         </tbody>
     </table>
+    <a href="/usuario/nuevo" class="btn btn-primary">Crear Nuevo Usuario</a>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 @Service
 public class UsuarioService {
 
-  // Lista mutable de usuarios
   private List<Usuario> usuarios = new ArrayList<>(List.of(
           new Usuario(1, "Marcelos Salas", "marcelo.salas@example.com", 72),
           new Usuario(2, "Michael Perez Yackson", "michael.yackson@example.com", 16),
@@ -21,16 +20,23 @@ public class UsuarioService {
   // Obtener todos los usuarios como DTO
   public List<UsuarioDTO> getAllUsuario() {
     return usuarios.stream()
-            .map(usuario -> new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getEdad())) // Incluye edad
+            .map(usuario -> new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getEdad()))
             .collect(Collectors.toList());
   }
 
-  // Obtener un usuario por ID como DTO
+  // Obtener un usuario por ID
   public UsuarioDTO getUsuarioById(int id) {
     return usuarios.stream()
             .filter(usuario -> usuario.getId() == id)
-            .map(usuario -> new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getEdad())) // Incluye edad
+            .map(usuario -> new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getEdad()))
             .findFirst()
-            .orElse(new UsuarioDTO(-1, "Usuario no encontrado", 0)); // Edad por defecto en caso de error
+            .orElse(new UsuarioDTO(-1, "Usuario no encontrado", 0)); // Usuario no encontrado
+  }
+
+  // Guardar un nuevo usuario
+  public void guardarUsuario(UsuarioDTO usuarioDTO) {
+    int nuevoId = usuarios.size() + 1; // Simplemente asignamos un id nuevo
+    Usuario usuario = new Usuario(nuevoId, usuarioDTO.getNombre(), "email@domain.com", usuarioDTO.getEdad());
+    usuarios.add(usuario);
   }
 }
