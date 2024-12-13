@@ -1,6 +1,7 @@
 package com.pako.modulo_6.services;
 
 import com.pako.modulo_6.dtos.UsuarioDTO;
+import com.pako.modulo_6.interfaces.UsuarioService;
 import com.pako.modulo_6.models.Usuario;
 import org.springframework.stereotype.Service;
 
@@ -9,15 +10,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UsuarioService {
+public class UsuarioServiceImpl  implements UsuarioService {
 
-  private List<Usuario> usuarios = new ArrayList<>(List.of(
+  private final List<Usuario> usuarios = new ArrayList<>(List.of(
           new Usuario(1, "Marcelos Salas", "marcelo.salas@example.com", 72),
           new Usuario(2, "Michael Perez Yackson", "michael.yackson@example.com", 16),
           new Usuario(3, "Taylor Switch", "taylor.switch@example.com", 34)
   ));
 
-  // Obtener todos los usuarios como DTO
+  //Obtener todos los usuarios como DTO
+  @Override
   public List<UsuarioDTO> getAllUsuario() {
     return usuarios.stream()
             .map(usuario -> new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getEdad()))
@@ -32,11 +34,31 @@ public class UsuarioService {
             .findFirst()
             .orElse(new UsuarioDTO(-1, "Usuario no encontrado", 0)); // Usuario no encontrado
   }
+  //Metodo para validar datos de ingreso segun pdf
+  @Override
+  public boolean validarUsuario(UsuarioDTO usuarioDTO) {
+    if(usuarioDTO.getNombre() == null || usuarioDTO.getNombre().isEmpty()){
+      return false;
+    }
+    if(usuarioDTO.getEmail() == null || !usuarioDTO.getEmail().contains("@")){
+      return false;
+    }
+    if(usuarioDTO.getEdad() <= 0){
+      return false;
+    }
+    return true;
+  }
 
   // Guardar un nuevo usuario
-  public void guardarUsuario(UsuarioDTO usuarioDTO) {
-    int nuevoId = usuarios.size() + 1; // Simplemente asignamos un id nuevo
-    Usuario usuario = new Usuario(nuevoId, usuarioDTO.getNombre(), "email@domain.com", usuarioDTO.getEdad());
-    usuarios.add(usuario);
+  @Override
+  public boolean guardarUsuario(UsuarioDTO usuarioDTO) {
+    if (validarUsuario(usuarioDTO)) {
+      int nuevoId = usuarios.size() + 1;
+      Usuario nuevoUsuario = new Usuario(nuevoId, usuarioDTO.getNombre(), usuarioDTO.getEmail(), usuarioDTO.getEdad());
+      usuarios.add(nuevoUsuario);
+      return true;
+    }
+    return false;
   }
+
 }

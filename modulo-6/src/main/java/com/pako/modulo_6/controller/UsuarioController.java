@@ -1,7 +1,7 @@
 package com.pako.modulo_6.controller;
 
 import com.pako.modulo_6.dtos.UsuarioDTO;
-import com.pako.modulo_6.services.UsuarioService;
+import com.pako.modulo_6.interfaces.UsuarioService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,4 +41,20 @@ public class UsuarioController {
     model.addAttribute("nuevo", usuarioDTO);
     return "nuevo-usuario"; // Vista Thymeleaf
   }
+  //Metodo para validar usuario
+  @PostMapping("/validar")
+  public String validarYGuardarUsuario(@ModelAttribute UsuarioDTO usuarioDTO, Model model) {
+    if (!usuarioService.validarUsuario(usuarioDTO)) {
+      model.addAttribute("error", "Datos inválidos. Por favor, verifica la información.");
+      return "formulario-usuario";
+    }
+
+    if (!usuarioService.guardarUsuario(usuarioDTO)) {
+      model.addAttribute("error", "Error al guardar usuario.");
+      return "usuarios";
+    }
+
+    return "redirect:/usuario/lista"; // Redirige a la lista si tiene éxito
+  }
+
 }
