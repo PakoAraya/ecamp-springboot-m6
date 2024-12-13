@@ -26,6 +26,14 @@ public class ProductoController {
 //         this.productoServiceImpl = productoServiceImpl;
 //        this.productoService=new ProductoServiceImpl();
 //    }
+
+  /***
+   * Metodo que retorna lista completa de productos
+   *
+   * @author Francisco Javier Araya H
+   * @param model parte de ui de spring
+   * @return nombre del template a usar
+   */
   @GetMapping("/lista")
   public String mostrarLista(Model model) {
     List<ProductoDTO> productoLista = productoService.obtenerProductos();
@@ -33,6 +41,13 @@ public class ProductoController {
     return "productos";
   }
 
+  /***
+   * Metodo que redirige a template de formulario
+   *
+   * @author Francisco Javier Araya H
+   * @param model parte de ui de spring
+   * @return retornamos el dto a usar en formulario, template del formulario
+   */
 
   @GetMapping("/formulario")
   public String formulario(Model model) {
