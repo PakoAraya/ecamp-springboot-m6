@@ -1,11 +1,24 @@
 package com.pako.modulo_6.dtos;
 
 import com.pako.modulo_6.models.Producto;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 public class ProductoDTO {
+
+
   private int id;
+  @NotNull
+  @Size(min = 5, max = 50)
   private String nombre;
+
+  @NotNull
+  @Size(min = 5, max = 150)
   private String descripcion;
+
+  @NotNull
+  @Positive
   private double precio;
   private boolean enStock;
 

@@ -51,14 +51,15 @@ public class UsuarioServiceImpl  implements UsuarioService {
 
   // Guardar un nuevo usuario
   @Override
-  public boolean guardarUsuario(UsuarioDTO usuarioDTO) {
+  public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
     if (validarUsuario(usuarioDTO)) {
       int nuevoId = usuarios.size() + 1;
       Usuario nuevoUsuario = new Usuario(nuevoId, usuarioDTO.getNombre(), usuarioDTO.getEmail(), usuarioDTO.getEdad());
       usuarios.add(nuevoUsuario);
-      return true;
+      // Devolver un UsuarioDTO con los datos del nuevo usuario
+      return new UsuarioDTO(nuevoUsuario.getId(), nuevoUsuario.getNombre(), nuevoUsuario.getEdad());
     }
-    return false;
+    return null; // Devuelve null si no se puede guardar el usuario
   }
 
 }

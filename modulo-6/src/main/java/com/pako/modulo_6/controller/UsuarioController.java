@@ -2,8 +2,10 @@ package com.pako.modulo_6.controller;
 
 import com.pako.modulo_6.dtos.UsuarioDTO;
 import com.pako.modulo_6.interfaces.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +20,13 @@ public class UsuarioController {
     this.usuarioService = usuarioService;
   }
 
+  /***
+   * Metodo que entrega una lista completa de usuarios
+   *
+   * @author Francisco Javier Araya H
+   * @param model entrega un model de ui de spring
+   * @return retorna nombre de template a usar
+   */
   // Mostrar lista de usuarios
   @GetMapping("/lista")
   public String obtenerUsuarios(Model model) {
@@ -33,28 +42,50 @@ public class UsuarioController {
     return "formulario-usuario"; // Vista Thymeleaf
   }
 
-  // Guardar un nuevo usuario
+  // Guardar un nuevo usuario usando las validaciones de spring
   @PostMapping("/guardar")
-  public String guardarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO, Model model) {
-    // Aquí podrías agregar lógica para guardar en la base de datos
-    // Actualmente solo mostramos el nuevo usuario
-    model.addAttribute("nuevo", usuarioDTO);
-    return "nuevo-usuario"; // Vista Thymeleaf
+  public String guardarUsuario(
+          @Valid //Habilita validaciones definidas para UsuarioDTO
+          @ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO,
+          BindingResult result, //Captura los errores de validacion de UsuarioDTO
+          Model model
+  ) {
+    //Esto es para la captura de errores de UsuarioDTO
+    if(result.hasErrors()){
+      model.addAttribute("error", "Error en el envio de formularios");
+      model.addAttribute("errores", result.getAllErrors());
+      System.out.println(result.getAllErrors());
+      return "formulario-usuario"; // Vista Thymeleaf
+    }
+    //Si no hay errores, se muestra el objeto guardado en la vista
+    System.out.println(usuarioDTO);
+    UsuarioDTO nuevoUsuarioDTO = usuarioService.guardarUsuario(usuarioDTO);
+    System.out.println(nuevoUsuarioDTO);
+    model.addAttribute("nuevo", usuarioDTO); //se usa nuevo (de nuevo usuario)
+    return "nuevo-usuario"; //Vista para el nuevo usuario
   }
+
+
   //Metodo para validar usuario
   @PostMapping("/validar")
   public String validarYGuardarUsuario(@ModelAttribute UsuarioDTO usuarioDTO, Model model) {
+    // Valida los datos del usuario
     if (!usuarioService.validarUsuario(usuarioDTO)) {
       model.addAttribute("error", "Datos inválidos. Por favor, verifica la información.");
-      return "formulario-usuario";
+      return "formulario-usuario";  // Retorna a la vista del formulario con error
     }
 
-    if (!usuarioService.guardarUsuario(usuarioDTO)) {
+    // Intenta guardar el usuario y obtiene el objeto guardado
+    UsuarioDTO usuarioGuardado = usuarioService.guardarUsuario(usuarioDTO);
+
+    // Si no se guardó correctamente, muestra un mensaje de error
+    if (usuarioGuardado == null) {
       model.addAttribute("error", "Error al guardar usuario.");
-      return "usuarios";
+      return "formulario-usuario";  // Retorna a la vista del formulario con error
     }
 
-    return "redirect:/usuario/lista"; // Redirige a la lista si tiene éxito
+    // Si se guardó correctamente, redirige a la lista de usuarios
+    return "redirect:/usuario/lista";
   }
 
 }

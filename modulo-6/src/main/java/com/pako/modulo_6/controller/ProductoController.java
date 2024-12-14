@@ -3,11 +3,13 @@ package com.pako.modulo_6.controller;
 import com.pako.modulo_6.dtos.ProductoDTO;
 import com.pako.modulo_6.interfaces.ProductoService;
 import com.pako.modulo_6.services.ProductoServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,9 +59,19 @@ public class ProductoController {
 
   @PostMapping("/guardar")
   public String guardarProducto(
+          @Valid
           @ModelAttribute("productoDTO") ProductoDTO productoDTO,
+          BindingResult result,
           Model model
   ) {
+    //Esto es para capturar o atrapar errores
+      if (result.hasErrors()) {
+        model.addAttribute("error", "Error en envio de formulario");
+        model.addAttribute("errores", result.getAllErrors());
+        System.out.println(result.getAllErrors());
+        return "formulario-producto";
+      }
+
     System.out.println(productoDTO);
     //guardar
     ProductoDTO nuevoProductoDTO = productoService.guardarProducto(productoDTO);
