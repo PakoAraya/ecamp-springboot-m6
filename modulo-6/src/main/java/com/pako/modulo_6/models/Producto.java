@@ -1,5 +1,6 @@
 package com.pako.modulo_6.models;
 
+import com.pako.modulo_6.dtos.ProductoDTO;
 import org.springframework.stereotype.Component;
 
 /***
@@ -30,6 +31,15 @@ public class Producto {
     this.descripcion = descripcion;
     this.precio = precio;
     this.enStock = enStock;
+  }
+
+  //Constructor para trabajar con ProductoServiceImple y el JDBC
+  public Producto(ProductoDTO productoDTO) {
+    this.id = productoDTO.getId();
+    this.nombre = productoDTO.getNombre();
+    this.descripcion = productoDTO.getDescripcion();
+    this.precio = productoDTO.getPrecio();
+    this.enStock = productoDTO.isEnStock();
   }
 
   public Producto() {
