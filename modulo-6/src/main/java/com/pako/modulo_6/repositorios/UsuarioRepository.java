@@ -39,7 +39,7 @@ public class UsuarioRepository {
   //Obtener usuarios cuyo correo termine en bootcamp.cl
   public List<Usuario> traerUsuarioBootcampCl(){
     String sql = "SELECT * FROM usuario WHERE email LIKE ?;";
-    return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Usuario.class),"@bootcamp.cl");
+    return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Usuario.class),"%@bootcamp.cl");
     //Estudiar cuantos parametros permite query, ahora permitio "@bootcamp.cl"
   }
 
