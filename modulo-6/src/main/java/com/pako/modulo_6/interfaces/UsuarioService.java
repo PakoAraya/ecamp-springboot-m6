@@ -8,4 +8,6 @@ public interface UsuarioService {
   UsuarioDTO getUsuarioById(int id); // Obtiene un usuario por ID
   UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO); // Guarda un usuario si es válido
   boolean validarUsuario(UsuarioDTO usuarioDTO); // Valida los datos de un usuario
+  List<UsuarioDTO> buscarUsuarioPorEdad(); //Trae ordenados los usuario por edad asc
+  List<UsuarioDTO> traerUsuarioBootcampCl(); //Trae usuarios cuyo correo termine en @bootcamp.cl
 }

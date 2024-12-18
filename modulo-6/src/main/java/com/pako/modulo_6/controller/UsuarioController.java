@@ -65,7 +65,6 @@ public class UsuarioController {
     return "nuevo-usuario"; //Vista para el nuevo usuario
   }
 
-
   //Metodo para validar usuario
   @PostMapping("/validar")
   public String validarYGuardarUsuario(@ModelAttribute UsuarioDTO usuarioDTO, Model model) {
@@ -86,6 +85,22 @@ public class UsuarioController {
 
     // Si se guardó correctamente, redirige a la lista de usuarios
     return "redirect:/usuario/lista";
+  }
+
+  // Endpoint Mostrar usuarios ordenados por edad
+  @GetMapping("/lista/edad")
+  public String buscarUsuarioPorEdad(Model model){
+    List<UsuarioDTO> usuarioLista = usuarioService.buscarUsuarioPorEdad();
+    model.addAttribute("usuarios", usuarioLista);
+    return "usuarios-edad"; // => Esta vista se debe mostrar en Thymeleaf
+  }
+
+  //Endpoint mostrando usuarios cuyo correo termine en "@bootcamp.cl"
+  @GetMapping("/lista/correosbootcamp")
+  public String traerUsuarioBootcampCl(Model model){
+    List<UsuarioDTO> usuarioLista = usuarioService.traerUsuarioBootcampCl();
+    model.addAttribute("usuarios", usuarioLista);
+    return "usuarios-bootcamp"; // => Esta vista se debe mostrar en thymeleaf
   }
 
 }

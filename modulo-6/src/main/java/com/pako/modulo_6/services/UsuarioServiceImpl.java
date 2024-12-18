@@ -31,34 +31,8 @@ public class UsuarioServiceImpl  implements UsuarioService {
   public UsuarioDTO getUsuarioById(int id) {
     // Aquí debería ir la lógica para obtener el usuario por ID
     // Esto es solo un ejemplo simple, puedes adaptarlo según tu implementación
-    return new UsuarioDTO(id, "Usuario de ejemplo", "email@dominio.com", 25);
+    return new UsuarioDTO(id, "Usuario de ejemplo", "email@dominio.com", 25, true);
   }
-
-  /* Estos metodos se reemplazan por la nueva forma de trabajo con JDBC
-
-  private final List<Usuario> usuarios = new ArrayList<>(List.of(
-          new Usuario(1, "Marcelos Salas", "marcelo.salas@example.com", 72),
-          new Usuario(2, "Michael Perez Yackson", "michael.yackson@example.com", 16),
-          new Usuario(3, "Taylor Switch", "taylor.switch@example.com", 34)
-  ));
-
-  //Obtener todos los usuarios como DTO
-  @Override
-  public List<UsuarioDTO> getAllUsuario() {
-    return usuarios.stream()
-            .map(usuario -> new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getEdad()))
-            .collect(Collectors.toList());
-  }
-
-  // Obtener un usuario por ID
-  public UsuarioDTO getUsuarioById(int id) {
-    return usuarios.stream()
-            .filter(usuario -> usuario.getId() == id)
-            .map(usuario -> new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getEdad()))
-            .findFirst()
-            .orElse(new UsuarioDTO(-1, "Usuario no encontrado", 0)); // Usuario no encontrado
-  }
-*/
 
 @Override
 public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
@@ -66,29 +40,13 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
   Usuario nuevoUsuario = new Usuario(usuarioDTO.getId(),
                                      usuarioDTO.getNombre(),
                                      usuarioDTO.getEmail(),
-                                     usuarioDTO.getEdad());
+                                     usuarioDTO.getEdad(),
+                                     usuarioDTO.isActivo());
   //Llamamos al repositorio para guardar el usuario en la base de datos
   usuarioRepository.guardarUsuario(nuevoUsuario);
   //Regresamos el DTO del usuario guardado
   return usuarioDTO;
 }
-
-  /* Este codigo cambia ahora con la implementacion del metodo de arriba que trabaja con JDBC
-  // Guardar un nuevo usuario
-  @Override
-  public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
-    if (validarUsuario(usuarioDTO)) {
-      int nuevoId = usuarios.size() + 1;
-      Usuario nuevoUsuario = new Usuario(nuevoId, usuarioDTO.getNombre(), usuarioDTO.getEmail(), usuarioDTO.getEdad());
-      usuarios.add(nuevoUsuario);
-      // Devolver un UsuarioDTO con los datos del nuevo usuario
-      return new UsuarioDTO(nuevoUsuario.getId(), nuevoUsuario.getNombre(), nuevoUsuario.getEdad());
-    }
-    return null; // Devuelve null si no se puede guardar el usuario
-  }
-
-   */
-
   //Metodo para validar datos de ingreso segun pdf
   @Override
   public boolean validarUsuario(UsuarioDTO usuarioDTO) {
@@ -105,6 +63,23 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
     return true;
   }
 
+  @Override
+  public List<UsuarioDTO> buscarUsuarioPorEdad() {
+    List<Usuario> usuarios = usuarioRepository.buscarUsuarioPorEdad();
+    //Mapear los usuarios obtenidos a una lista DTO
+    return usuarios.stream()
+            .map(usuario -> new UsuarioDTO(usuario))
+            .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<UsuarioDTO> traerUsuarioBootcampCl() {
+    List<Usuario> usuarios = usuarioRepository.traerUsuarioBootcampCl();
+    // Mapear los usuarios obtenidos a una lista de DTO
+    return usuarios.stream()
+            .map(usuario -> new UsuarioDTO(usuario))
+            .collect(Collectors.toList());
+  }
 
 
 }

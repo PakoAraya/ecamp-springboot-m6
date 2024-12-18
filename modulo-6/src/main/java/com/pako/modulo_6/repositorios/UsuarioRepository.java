@@ -30,4 +30,18 @@ public class UsuarioRepository {
     jdbcTemplate.update(sql, usuario.getNombre(), usuario.getEmail(), usuario.getEdad());
   }
 
+  //Metodo para ordenar usuarios por edad de manera ascendente
+  public List<Usuario> buscarUsuarioPorEdad(){
+    String sql = "SELECT * FROM usuario ORDER BY edad ASC;";
+    return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Usuario.class));
+  }
+
+  //Obtener usuarios cuyo correo termine en bootcamp.cl
+  public List<Usuario> traerUsuarioBootcampCl(){
+    String sql = "SELECT * FROM usuario WHERE email LIKE ?;";
+    return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Usuario.class),"@bootcamp.cl");
+    //Estudiar cuantos parametros permite query, ahora permitio "@bootcamp.cl"
+  }
+
+
 }
