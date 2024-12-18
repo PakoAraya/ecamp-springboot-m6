@@ -1,5 +1,4 @@
 
--- CREACION DE TABLAS MODULO 6 SPRING
 --Creacion de la tabla de productos
 CREATE TABLE producto (
     id SERIAL PRIMARY KEY,         -- ID autogenerado
@@ -21,19 +20,33 @@ VALUES
 SELECT * FROM producto ;
 
 -- Creacion de tabla de usuarios
+/*
 CREATE TABLE usuario(
 	id 			serial PRIMARY KEY,
 	nombre 	varchar(100) NOT NULL,
 	email		varchar(100) unique NOT NULL,
 	edad 		int NOT null 
+); */
+
+CREATE TABLE usuario(
+	id				serial PRIMARY KEY,
+	nombre 		varchar(100) NOT NULL,
+	email 		varchar(100) NOT NULL,
+	edad 			integer NOT NULL,
+	activo		boolean NOT NULL
 );
 
 -- Carga de data para tabla usuarios
-INSERT INTO usuario (nombre, email, edad) VALUES 
-('Aytor Senna', 'ayrtonsenna@mclaren.com', 34),
-('Michael Schumacher', 'mschumacher@ferrari.com', 32),
-('Sergio Perez', 'checo@redbull.com', 31),
-('Max Versttapen', 'mversttapen@redbull.com', 28),
-('Lewis Hamilton', 'lhamilton@ferrari.com', 32);
+INSERT INTO usuario (nombre, email, edad, activo) VALUES 
+('Ayrton Senna', 'ayrtonsenna@mclaren.com', 34, false),
+('Michael Schumacher', 'mschumacher@ferrari.com', 32, false),
+('Sergio Perez', 'checo@redbull.com', 31, true),
+('Max Verstappen', 'mverstappen@redbull.com', 28, true),
+('Lewis Hamilton', 'lhamilton@ferrari.com', 32, true),
+('Mariah Carey', 'mcarey@bootcamp.cl', 31, true),
+('Karol G', 'karolg@bootcamp.cl', 28, true),
+('Taylor Swift', 'tswift@bootcamp.cl', 32, false);
+
+SELECT * FROM usuario u ;
 
 
