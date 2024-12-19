@@ -28,6 +28,8 @@ public interface ProductoRepositoryJPA extends JpaRepository<Producto, Integer> 
 
   // También podemos trabajar con SQL normal
   // Usamos JPQL para hacer la consulta basada en el nombre de la entidad y sus atributos
+  //Por lo general la consulta se hace select * from, pero aqui se cambia por un alias para indicar cada entidad
+  //es decir en vez de escribir select * from producto, se escribe select p from producto y trae la data de producto.
   @Query("SELECT p FROM Producto p WHERE p.nombre=:nombre")
   List<Producto> buscarByNombre(@Param("nombre") String nombre);
 
