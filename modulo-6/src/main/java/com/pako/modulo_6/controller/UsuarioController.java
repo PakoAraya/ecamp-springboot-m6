@@ -35,6 +35,20 @@ public class UsuarioController {
     return "usuarios"; // Vista Thymeleaf
   }
 
+  // Método para obtener usuario por ID
+  @GetMapping("/detalle-usuario/{id}")
+  public String obtenerUsuarioPorId(@PathVariable("id") Integer id, Model model) {
+    UsuarioDTO usuarioDTO = usuarioService.getUsuarioById(id);  // Llamamos al servicio para obtener el usuario
+
+    if (usuarioDTO == null) {
+      model.addAttribute("error", "Usuario no encontrado");
+      return "error"; // Vista de error si no se encuentra el usuario
+    }
+
+    model.addAttribute("usuario", usuarioDTO);  // Enviamos el usuario a la vista
+    return "detalle-usuario";  // Vista para mostrar el detalle del usuario
+  }
+
   // Mostrar formulario para crear un nuevo usuario
   @GetMapping("/nuevo")
   public String mostrarFormulario(Model model) {

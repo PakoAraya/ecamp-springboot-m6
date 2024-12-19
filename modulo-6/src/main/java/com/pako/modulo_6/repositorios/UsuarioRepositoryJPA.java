@@ -10,9 +10,6 @@ public interface UsuarioRepositoryJPA extends JpaRepository<Usuario, Integer> {
   //Aqui debemos desarrollar los metodos que estaban en el Repository de Usuario (UsuarioRepository)
   //Se recomendaria eliminar la clase UsuarioRepository a futuro.
 
-  //Traer a otros los usuarios por ID
-  List<Usuario> getAllUsersById(Integer id);
-
   //Traer todos los usuarios por edad para ordenar de menor a mayor
   List<Usuario> findAllByOrderByEdadAsc();
 
