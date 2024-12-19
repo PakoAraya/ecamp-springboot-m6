@@ -1,15 +1,12 @@
 package com.pako.modulo_6.services;
 
-import com.pako.modulo_6.dtos.ProductoDTO;
 import com.pako.modulo_6.dtos.UsuarioDTO;
 import com.pako.modulo_6.interfaces.UsuarioService;
-import com.pako.modulo_6.models.Producto;
 import com.pako.modulo_6.models.Usuario;
-import com.pako.modulo_6.repositorios.UsuarioRepository;
+import com.pako.modulo_6.repositorios.UsuarioRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,24 +14,26 @@ import java.util.stream.Collectors;
 public class UsuarioServiceImpl  implements UsuarioService {
 
   @Autowired
-  private UsuarioRepository usuarioRepository;
+  UsuarioRepositoryJPA usuarioRepositoryJPA;
 
   //Tengo que obtener los datos de mi repository (Semejante a DAO)
   @Override
   public List<UsuarioDTO> getAllUsuario(){
-    return this.usuarioRepository.getAllUsuario().stream()
+    return this.usuarioRepositoryJPA.findAll().stream()
             .map(usuario -> new UsuarioDTO(usuario))
             .collect(Collectors.toList());
   }
 
   @Override
   public UsuarioDTO getUsuarioById(int id) {
-    // Aquí debería ir la lógica para obtener el usuario por ID
-    // Esto es solo un ejemplo simple, puedes adaptarlo según tu implementación
-    return new UsuarioDTO(id, "Usuario de ejemplo", "email@dominio.com", 25, true);
+    // Usamos el método findById del repositorio JPA
+    return usuarioRepositoryJPA.findById(id)
+            .map(UsuarioDTO::new) // Convertimos el Usuario a UsuarioDTO si está presente
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id)); // Lanza una excepción si no se encuentra
   }
 
-@Override
+
+  @Override
 public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
    //Convertimos el DTO a un objeto Usuario
   Usuario nuevoUsuario = new Usuario(usuarioDTO.getId(),
@@ -43,7 +42,7 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
                                      usuarioDTO.getEdad(),
                                      usuarioDTO.isActivo());
   //Llamamos al repositorio para guardar el usuario en la base de datos
-  usuarioRepository.guardarUsuario(nuevoUsuario);
+  usuarioRepositoryJPA.save(nuevoUsuario);
   //Regresamos el DTO del usuario guardado
   return usuarioDTO;
 }
@@ -65,7 +64,7 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
 
   @Override
   public List<UsuarioDTO> buscarUsuarioPorEdad() {
-    List<Usuario> usuarios = usuarioRepository.buscarUsuarioPorEdad();
+    List<Usuario> usuarios = usuarioRepositoryJPA.findAllByOrderByEdadAsc();
     //Mapear los usuarios obtenidos a una lista DTO
     return usuarios.stream()
             .map(usuario -> new UsuarioDTO(usuario))
@@ -74,7 +73,7 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
 
   @Override
   public List<UsuarioDTO> traerUsuarioBootcampCl() {
-    List<Usuario> usuarios = usuarioRepository.traerUsuarioBootcampCl();
+    List<Usuario> usuarios = usuarioRepositoryJPA.findByEmailEndingWith("@bootcamp.cl");
     // Mapear los usuarios obtenidos a una lista de DTO
     return usuarios.stream()
             .map(usuario -> new UsuarioDTO(usuario))
