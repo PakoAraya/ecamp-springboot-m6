@@ -1,6 +1,7 @@
 package com.pako.modulo_6.models;
 
 import com.pako.modulo_6.dtos.ProductoDTO;
+import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
 /***
@@ -8,12 +9,24 @@ import org.springframework.stereotype.Component;
  * @since 13-12-2024
  * @version 1.0.0
  */
-@Component
+@Entity
+@Table(name = "producto")
 public class Producto {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
+
+  @Column(name = "nombre", nullable = false, length = 100)
   private String nombre;
+
+  @Column(name = "descripcion", nullable = false, length = 100)
   private String descripcion;
+
+  @Column(name = "precio", nullable = false)
   private double precio;
+
+  @Column(name = "en_Stock", nullable = false)
   private boolean enStock;
 
   /***
