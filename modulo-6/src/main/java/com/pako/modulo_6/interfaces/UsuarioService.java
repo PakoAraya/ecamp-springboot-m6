@@ -13,4 +13,6 @@ public interface UsuarioService {
   List<UsuarioDTO> buscarUsuarioPorEdad(); //Trae ordenados los usuario por edad asc
   List<UsuarioDTO> traerUsuarioBootcampCl(); //Trae usuarios cuyo correo termine en @bootcamp.cl
   List<UsuarioDTO> findByEdadBetween(int edadMin, int edadMax);
+  List<UsuarioDTO> obtenerUsuariosMayoresDeEdad();
+  List<UsuarioDTO> obtenerUsuariosActivos();
 }

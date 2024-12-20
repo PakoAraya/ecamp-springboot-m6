@@ -29,6 +29,18 @@ public class UsuarioRestController {
     return usuarioLista; //
   }
 
+  //Mostrar lista de usuarios activos en el sistema
+  @GetMapping("/activos")
+  public List<UsuarioDTO> usuarioActivos() {
+    return usuarioService.obtenerUsuariosActivos();
+  }
+
+  //Mostrar lista de usuarios que sean mayores de edad (18)
+  @GetMapping("/mayores-de-edad")
+  public List<UsuarioDTO> mayoresDeEdad() {
+    return usuarioService.obtenerUsuariosMayoresDeEdad();
+  }
+
   //Mostrar usuarios por un rango de edad
   @GetMapping("/rango-edades")
   public List<UsuarioDTO> obtenerUsuariosPorRangoDeEdad(

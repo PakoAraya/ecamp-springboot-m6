@@ -80,6 +80,24 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
             .collect(Collectors.toList());
   }
 
+  //Metodo para obtener a los usuarios activos (Boolean = True) en el sistema
+  public List<UsuarioDTO> obtenerUsuariosActivos(){
+    List<Usuario> usuarios = usuarioRepositoryJPA.findUsuariosActivos();
+    //Mapear los usuarios obtenidos para pasarlos a una lista DTO
+    return usuarios.stream()
+            .map(usuario -> new UsuarioDTO(usuario))
+            .collect(Collectors.toList());
+  }
+
+  //Metodo para obtener a los usuarios mayores de edad
+  public List<UsuarioDTO> obtenerUsuariosMayoresDeEdad(){
+    List<Usuario> usuarios = usuarioRepositoryJPA.findUsuariosMayoresDeEdad();
+    //Mapear los usuarios obtenidos para pasarlos a una lista DTO
+    return usuarios.stream()
+            .map(usuario -> new UsuarioDTO(usuario))
+            .collect(Collectors.toList());
+  }
+
   //Se crea metodo para rango de edad del RestController
   public List<UsuarioDTO> findByEdadBetween(int edadMin, int edadMax) {
     // Llamamos al repositorio para tener la lista de usuario en rango de edad
