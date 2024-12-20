@@ -107,6 +107,14 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
             .collect(Collectors.toList());
   }
 
+  //Metodo para mostrar un usuario en base a su correo electronico
+  public List<UsuarioDTO> obtenerUsuariosPorCorreo(String email){
+    List<Usuario> usuarios = usuarioRepositoryJPA.findUsuarioByEmail(email);
+    //Mapear los usuarios obtenidos para pasarlos a lista DTO
+    return usuarios.stream()
+            .map(usuario -> new UsuarioDTO(usuario))
+            .collect(Collectors.toList());
+  }
   //Metodo para mostrar usuarios dentro de un rango de edad en RestController
   public List<UsuarioDTO> findByEdadBetween(int edadMin, int edadMax) {
     // Llamamos al repositorio para tener la lista de usuario en rango de edad
@@ -117,16 +125,18 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
             .collect(Collectors.toList());
   }
 
-  //Metodo para mostrar un usuario en base a su correo electronico
-  public List<UsuarioDTO> obtenerUsuariosPorCorreo(String email){
-    List<Usuario> usuarios = usuarioRepositoryJPA.findUsuarioByEmail(email);
-    //Mapear los usuarios obtenidos para pasarlos a lista DTO
-    return usuarios.stream().map(usuario -> new UsuarioDTO(usuario)).collect(Collectors.toList());
-  }
-
   //Metodo para contar la cantidad de usuarios activos dentro de la App
   public int contarUsuariosActivos(){
     return usuarioRepositoryJPA.findContarUsuariosActivos();
+  }
+
+  //MEtodo para mostrar usuarios en base a palabra clave dentro de direccion de correo
+  public List<UsuarioDTO> obtenerUsuarioPorKeywordCorreo(String keyword){
+    List<Usuario> usuarios = usuarioRepositoryJPA.findUsuarioByEmailContaining(keyword);
+    //Hay que mapear la lista para pasar a una lista DTO
+    return usuarios.stream()
+            .map(usuario -> new UsuarioDTO(usuario))
+            .collect(Collectors.toList());
   }
 
 }

@@ -17,6 +17,14 @@ public class UsuarioRestController {
     this.usuarioService = usuarioService;
   }
 
+  /*
+    INFORMACION IMPORTANTE EN PASO DE PARAMETROS
+    No Confundir @RequestParam y @PathVariable:
+
+    Usa @RequestParam para parámetros tipo query (?key=value).
+    Usa @PathVariable para parámetros en la ruta (/path/{variable}).
+  */
+
   // Mostrar lista de usuarios
   @GetMapping("/lista")  // => Me trae todos los usuarios registrados de BD
   public List<UsuarioDTO> obtenerUsuarios() {
@@ -61,5 +69,11 @@ public class UsuarioRestController {
   @GetMapping("/conteo-activos")
   public int conteoUsuariosActivos() {
     return usuarioService.contarUsuariosActivos();
+  }
+
+  //Mostrar usuario en base a una palabra clave dentro de direccion de email
+  @GetMapping("/buscar-por-email-keyword")
+  public List<UsuarioDTO> buscarPorEmailKeyword(@RequestParam String keyword) {
+    return usuarioService.obtenerUsuarioPorKeywordCorreo(keyword);
   }
 }
