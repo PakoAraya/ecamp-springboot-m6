@@ -124,4 +124,9 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
     return usuarios.stream().map(usuario -> new UsuarioDTO(usuario)).collect(Collectors.toList());
   }
 
+  //Metodo para contar la cantidad de usuarios activos dentro de la App
+  public int contarUsuariosActivos(){
+    return usuarioRepositoryJPA.findContarUsuariosActivos();
+  }
+
 }

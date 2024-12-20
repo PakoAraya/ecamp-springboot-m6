@@ -2,8 +2,6 @@ package com.pako.modulo_6.controller;
 
 import com.pako.modulo_6.dtos.UsuarioDTO;
 import com.pako.modulo_6.interfaces.UsuarioService;
-import com.pako.modulo_6.models.Usuario;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,7 +53,13 @@ public class UsuarioRestController {
 
   //Mostrar usuario en base a correo electronico
   @GetMapping("/buscar-por-email")
-public List<UsuarioDTO> buscarPorEmail(@RequestParam String email) {
+  public List<UsuarioDTO> buscarPorEmail(@RequestParam String email) {
     return usuarioService.obtenerUsuariosPorCorreo(email);
+  }
+
+  //Mostrar la cantidad de usuarios activos en la App
+  @GetMapping("/conteo-activos")
+  public int conteoUsuariosActivos() {
+    return usuarioService.contarUsuariosActivos();
   }
 }

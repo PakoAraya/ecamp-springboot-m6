@@ -17,4 +17,5 @@ public interface UsuarioService {
   List<UsuarioDTO> obtenerUsuariosMayoresDeEdad(); //Trae a todos los usuarios mayores de 18 años
   List<UsuarioDTO> findByEdadBetween(int edadMin, int edadMax); // Trae a todos los usuarios dentro de rango de edad
   List<UsuarioDTO> obtenerUsuariosPorCorreo(String email); //Trae a un usuario en base a su correo electronico
+  int contarUsuariosActivos();  // Trae la cantidad de usuarios activos en la App
 }

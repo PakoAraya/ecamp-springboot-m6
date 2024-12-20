@@ -34,6 +34,10 @@ public interface UsuarioRepositoryJPA extends JpaRepository<Usuario, Integer> {
   @Query(value = "SELECT * FROM usuario u WHERE u.email = :email", nativeQuery = true)
   List<Usuario> findUsuarioByEmail(@Param("email") String email);
 
+  //Query para contar a los usuarios activos dentro del sistema
+  @Query(value = "SELECT COUNT(*) FROM usuario u WHERE u.activo = TRUE", nativeQuery = true)
+  int findContarUsuariosActivos();
+
   //Query para traer el rango de edad (edadMon, edadMax), usaremos el metodo automatico
   //Aunque se podria haber hecho con native query
   List<Usuario> findByEdadBetween(int edadMin, int edadMax);
