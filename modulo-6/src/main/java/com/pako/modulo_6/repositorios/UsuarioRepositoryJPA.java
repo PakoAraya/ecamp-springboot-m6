@@ -16,4 +16,8 @@ public interface UsuarioRepositoryJPA extends JpaRepository<Usuario, Integer> {
   //Traer todos los usuarios cuyo correo termine en @bootcamp.cl
   List<Usuario> findByEmailEndingWith(String email);
 
+  //Query para traer el rango de edad (edadMon, edadMax), usaremos
+
+  List<Usuario> findByEdadBetween(int edadMin, int edadMax);
+
 }

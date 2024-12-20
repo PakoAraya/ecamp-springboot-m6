@@ -1,6 +1,8 @@
 package com.pako.modulo_6.interfaces;
 
 import com.pako.modulo_6.dtos.UsuarioDTO;
+import com.pako.modulo_6.models.Usuario;
+
 import java.util.List;
 
 public interface UsuarioService {
@@ -10,4 +12,5 @@ public interface UsuarioService {
   boolean validarUsuario(UsuarioDTO usuarioDTO); // Valida los datos de un usuario
   List<UsuarioDTO> buscarUsuarioPorEdad(); //Trae ordenados los usuario por edad asc
   List<UsuarioDTO> traerUsuarioBootcampCl(); //Trae usuarios cuyo correo termine en @bootcamp.cl
+  List<UsuarioDTO> findByEdadBetween(int edadMin, int edadMax);
 }

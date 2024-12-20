@@ -80,5 +80,16 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
             .collect(Collectors.toList());
   }
 
+  //Se crea metodo para rango de edad del RestController
+  public List<UsuarioDTO> findByEdadBetween(int edadMin, int edadMax) {
+    // Llamamos al repositorio para tener la lista de usuario en rango de edad
+    List<Usuario> usuarios = usuarioRepositoryJPA.findByEdadBetween(edadMin, edadMax);
+
+    //Hay que generar un return de los usuarios en una lista UsuarioDTO
+    return usuarios.stream()
+            .map(usuario -> new UsuarioDTO(usuario))
+            .collect(Collectors.toList());
+  }
+
 
 }
