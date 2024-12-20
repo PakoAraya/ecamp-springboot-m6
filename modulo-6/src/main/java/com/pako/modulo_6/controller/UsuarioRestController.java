@@ -4,10 +4,7 @@ import com.pako.modulo_6.dtos.UsuarioDTO;
 import com.pako.modulo_6.interfaces.UsuarioService;
 import com.pako.modulo_6.models.Usuario;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,6 +32,12 @@ public class UsuarioRestController {
     return usuarioService.obtenerUsuariosActivos();
   }
 
+  //Mostrar lista de usuario que sean mayores a una determinada edad
+  @GetMapping("/mayores-de/{edad}")
+  public List<UsuarioDTO> mayoresDe(@PathVariable int edad) {
+    return usuarioService.obtenerUsuariosMayoresDe(edad);
+  }
+
   //Mostrar lista de usuarios que sean mayores de edad (18)
   @GetMapping("/mayores-de-edad")
   public List<UsuarioDTO> mayoresDeEdad() {
@@ -50,4 +53,9 @@ public class UsuarioRestController {
     return usuarioService.findByEdadBetween(edadMin,edadMax);
   }
 
+  //Mostrar usuario en base a correo electronico
+  @GetMapping("/buscar-por-email")
+public List<UsuarioDTO> buscarPorEmail(@RequestParam String email) {
+    return usuarioService.obtenerUsuariosPorCorreo(email);
+  }
 }

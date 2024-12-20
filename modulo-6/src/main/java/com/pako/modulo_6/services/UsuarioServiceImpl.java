@@ -89,6 +89,15 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
             .collect(Collectors.toList());
   }
 
+  //Metodo para obtener usuarios mayores a cierta edad
+  public List<UsuarioDTO> obtenerUsuariosMayoresDe(int edad){
+    List<Usuario> usuarios = usuarioRepositoryJPA.findUsuariosMayoresDe(edad);
+    //Mapear los usuarios obtenidos para pasarlos a una lista DTO
+    return usuarios.stream()
+            .map(usuario -> new UsuarioDTO(usuario))
+            .collect(Collectors.toList());
+  }
+
   //Metodo para obtener a los usuarios mayores de edad
   public List<UsuarioDTO> obtenerUsuariosMayoresDeEdad(){
     List<Usuario> usuarios = usuarioRepositoryJPA.findUsuariosMayoresDeEdad();
@@ -98,16 +107,21 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
             .collect(Collectors.toList());
   }
 
-  //Se crea metodo para rango de edad del RestController
+  //Metodo para mostrar usuarios dentro de un rango de edad en RestController
   public List<UsuarioDTO> findByEdadBetween(int edadMin, int edadMax) {
     // Llamamos al repositorio para tener la lista de usuario en rango de edad
     List<Usuario> usuarios = usuarioRepositoryJPA.findByEdadBetween(edadMin, edadMax);
-
     //Hay que generar un return de los usuarios en una lista UsuarioDTO
     return usuarios.stream()
             .map(usuario -> new UsuarioDTO(usuario))
             .collect(Collectors.toList());
   }
 
+  //Metodo para mostrar un usuario en base a su correo electronico
+  public List<UsuarioDTO> obtenerUsuariosPorCorreo(String email){
+    List<Usuario> usuarios = usuarioRepositoryJPA.findUsuarioByEmail(email);
+    //Mapear los usuarios obtenidos para pasarlos a lista DTO
+    return usuarios.stream().map(usuario -> new UsuarioDTO(usuario)).collect(Collectors.toList());
+  }
 
 }
