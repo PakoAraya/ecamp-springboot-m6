@@ -1,7 +1,9 @@
 package com.pako.modulo_6.repositorios;
 
 import com.pako.modulo_6.models.Usuario;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -45,5 +47,11 @@ public interface UsuarioRepositoryJPA extends JpaRepository<Usuario, Integer> {
   //Query para mostrar usuarios en base a palabra clave de correo.
   @Query(value = "SELECT * FROM usuario u WHERE u.email LIKE %:keyword%", nativeQuery = true)
   List<Usuario> findUsuarioByEmailContaining(@Param("keyword") String keyword);
+
+  //Query para cambiar el estado de un usuario en base a su ID
+  @Modifying
+  @Transactional
+  @Query(value = "UPDATE usuario u SET u.activo = :activo WHERE u.id = :id", nativeQuery = true)
+  void updateUsuarioActivo(@Param("id") Integer id, @Param("activo") boolean activo);
 
 }

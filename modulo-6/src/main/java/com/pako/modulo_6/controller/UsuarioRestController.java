@@ -2,6 +2,7 @@ package com.pako.modulo_6.controller;
 
 import com.pako.modulo_6.dtos.UsuarioDTO;
 import com.pako.modulo_6.interfaces.UsuarioService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -75,5 +76,30 @@ public class UsuarioRestController {
   @GetMapping("/buscar-por-email-keyword")
   public List<UsuarioDTO> buscarPorEmailKeyword(@RequestParam String keyword) {
     return usuarioService.obtenerUsuarioPorKeywordCorreo(keyword);
+  }
+  /*
+    El siguiente metodo se debe probar en postman o insomnia, si se hace con navegador dara un
+    error 405 ocurre porque los navegadores no soportan solicitudes PUT directamente desde la
+    barra de direcciones.
+
+    ResponseEntity es una clase en Spring Framework que se utiliza para representar toda la respuesta HTTP,
+    incluidas las cabeceras (headers), el cuerpo (body) y el código de estado (status code).
+    Es una herramienta poderosa para personalizar la respuesta de una API REST. Se encuentra en el paquete
+    org.springframework.http.
+    ¿Por qué usar ResponseEntity?
+    Permite controlar detalles adicionales de la respuesta HTTP.
+    Es ideal para crear APIs REST más flexibles y explícitas.
+    Se usa cuando necesitas enviar respuestas con diferentes códigos de estado y cabeceras personalizadas.
+    Por ejemplo:
+
+    Enviar un código de estado como 201 (Created) en lugar de un simple 200 (OK).
+    Incluir cabeceras como Location para redirecciones.
+    Retornar un cuerpo de respuesta (como un mensaje o un objeto JSON).
+   */
+  //Mostrar usuario y cambiar su estado a activo y inactivo
+  @PutMapping("/{id}/estado-activo")
+  public ResponseEntity<String> cambiarEstadoUsuario(@PathVariable int id, @RequestParam boolean activo) {
+    usuarioService.cambiarEstadoUsuario(id, activo);
+    return ResponseEntity.ok("Estado del usuario con ID " + id + " actualizado correctamente");
   }
 }

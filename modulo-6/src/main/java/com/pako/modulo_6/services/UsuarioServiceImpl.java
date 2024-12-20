@@ -130,7 +130,7 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
     return usuarioRepositoryJPA.findContarUsuariosActivos();
   }
 
-  //MEtodo para mostrar usuarios en base a palabra clave dentro de direccion de correo
+  //Metodo para mostrar usuarios en base a palabra clave dentro de direccion de correo
   public List<UsuarioDTO> obtenerUsuarioPorKeywordCorreo(String keyword){
     List<Usuario> usuarios = usuarioRepositoryJPA.findUsuarioByEmailContaining(keyword);
     //Hay que mapear la lista para pasar a una lista DTO
@@ -139,4 +139,16 @@ public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) {
             .collect(Collectors.toList());
   }
 
+  //Metodo para cambiar el estado de usuario a activo
+  public void cambiarEstadoUsuario(int id, boolean estado){
+    // Obtener el usuario actual desde la base de datos
+    Usuario usuario = usuarioRepositoryJPA.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario con ID " + id + " no encontrado"));
+
+    // Cambiar el estado activo
+    usuario.setActivo(!usuario.isActivo());
+
+    // Guardar el usuario actualizado
+    usuarioRepositoryJPA.save(usuario);
+  }
 }
