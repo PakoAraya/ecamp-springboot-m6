@@ -16,12 +16,56 @@ public class UsuarioServiceImpl  implements UsuarioService {
   @Autowired
   UsuarioRepositoryJPA usuarioRepositoryJPA;
 
-  //Tengo que obtener los datos de mi repository (Semejante a DAO)
+/* METODO ANTES DE APLICAR EXCEPCIONES (TRY-CATCH)
   @Override
   public List<UsuarioDTO> getAllUsuario(){
     return this.usuarioRepositoryJPA.findAll().stream()
             .map(usuario -> new UsuarioDTO(usuario))
             .collect(Collectors.toList());
+  }
+
+  Si bien este bloque de codigo funciona y activa ciertas excepciones, funciona de manera muy generica.
+  @Override
+  public List<UsuarioDTO> getAllUsuario(){
+
+    try{
+      return this.usuarioRepositoryJPA.findAll().stream()
+              .map(usuario -> new UsuarioDTO(usuario))
+              .collect(Collectors.toList());
+    } catch (Exception e) {
+      throw new RuntimeException("Error al obtener la lista de usuarios", e);
+    }
+  }
+
+  La forma de trabajarlo correctamente se demuestra abajo, en donde es mucho mejor por trabajar
+  excepciones especificas. En el metodo anterior solo mostrata si hay fallos en el JPA, no valida
+  si la lista viene vacia.
+
+  En este metodo de mas abajo tiene validaciones especificas.
+  1.- Verifica si la lista viene vacia, y si esta vacia dispara excepcion.
+  2.- Se manejan mas errores por la transformacion de datos
+  3.- Mayor control sobre el retorno
+*/
+  //Metodo con manejo de excepciones
+  @Override
+  public List<UsuarioDTO> getAllUsuario(){
+
+    try{
+      //Intentamos obtener todos los usuarios
+      List<Usuario> usuarios = usuarioRepositoryJPA.findAll();
+
+      //Validamos que la lista no venga vacia
+      if(usuarios.isEmpty()){
+        throw new RuntimeException("La lista esta vacia, no se encontraron usuarios en la base de datos");
+      }
+      //Ahora en caso contrario, devolver los usuarios como lista DTO
+      return usuarios.stream()
+              .map(u -> new UsuarioDTO(u))
+              .collect(Collectors.toList());
+
+    } catch (Exception e) {
+      throw new RuntimeException("Error al obtener la lista de usuarios ", e);
+    }
   }
 
   //Se agrega bloque try-catch para evitar errores al no encontrar usuario por ID en ejecucion
