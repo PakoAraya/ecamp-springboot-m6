@@ -24,12 +24,16 @@ public class UsuarioServiceImpl  implements UsuarioService {
             .collect(Collectors.toList());
   }
 
+  //Se agrega bloque try-catch para evitar errores al no encontrar usuario por ID en ejecucion
   @Override
   public UsuarioDTO getUsuarioById(int id) {
-    // Usamos el método findById del repositorio JPA
-    return usuarioRepositoryJPA.findById(id)
-            .map(UsuarioDTO::new) // Convertimos el Usuario a UsuarioDTO si está presente
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id)); // Lanza una excepción si no se encuentra
+    try{
+      return usuarioRepositoryJPA.findById(id)
+              .map(UsuarioDTO::new)
+              .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+    } catch (Exception e) {
+      throw new RuntimeException("Error al obtener el usuario con ID: " + id, e);
+    }
   }
 
 
