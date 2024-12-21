@@ -19,15 +19,47 @@ public class ProductoServiceImpl implements ProductoService {
 
   @Override //Este metodo cambia usando JPA y el metodo FINDALL
   public List<ProductoDTO> obtenerProductos(){
-    return this.productoRepositoryJPA.findAll().stream()
-            .map(producto -> new ProductoDTO(producto))
-            .collect(Collectors.toList());
+
+    try{
+      List<Producto> productos = productoRepositoryJPA.findAll();
+      if(productos.isEmpty()){
+        throw new Exception("Lista esta vacia");
+      }
+
+      return productos.stream()
+              .map(producto -> new ProductoDTO(producto))
+              .collect(Collectors.toList());
+
+    }catch (Exception e){
+      throw new RuntimeException("No se pudo obtener la lista de productos");
+    }
+
   }
 
   @Override //Ahora el metodo cambia con JPA usando el metodo SAVE
   public ProductoDTO guardarProducto(ProductoDTO nuevoProductoDTO){
-    nuevoProductoDTO.setEnStock(true);
-    this.productoRepositoryJPA.save(new Producto(nuevoProductoDTO));
-    return nuevoProductoDTO;
+
+    try{
+
+      //Validar que el objeto no sea nulo
+      if(nuevoProductoDTO == null){
+        throw new IllegalArgumentException("El nuevo producto no puede ser nulo");
+      }
+
+      //Asegurarse de establecer valores necesarios
+      nuevoProductoDTO.setEnStock(true);
+
+      //Guardar el producto utilizando el repositorio JPA
+      Producto producto = new Producto(nuevoProductoDTO);
+      Producto productoGuardado = this.productoRepositoryJPA.save(producto);
+
+      //Retornar el DTO creado desde el producto guardado
+      return new ProductoDTO(productoGuardado);
+
+    } catch (IllegalArgumentException e) {
+      throw new RuntimeException("Error de validación al guardar el producto: " + e.getMessage(), e);
+    }catch (Exception e){
+      throw new RuntimeException("No se pudo guardar el producto: " + e.getMessage(), e);
+    }
   }
 }
