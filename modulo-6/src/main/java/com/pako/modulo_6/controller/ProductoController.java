@@ -17,17 +17,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/producto")
 public class ProductoController {
-  //@Autowired para generar inyecciones de dependencias de forma automatico
-//    private final ProductoServiceImpl productoServiceImpl;///inyeccion por constructor antigua
-  @Autowired
-//    @Qualifier("") escoge que implementacion usar
-  private ProductoService productoService;
 
-  //    public ProductoController(ProductoServiceImpl productoServiceImpl) {
-//   inyeccion por constructor antigua
-//         this.productoServiceImpl = productoServiceImpl;
-//        this.productoService=new ProductoServiceImpl();
-//    }
+  @Autowired
+  private ProductoService productoService;
 
   /***
    * Metodo que retorna lista completa de productos
@@ -38,9 +30,21 @@ public class ProductoController {
    */
   @GetMapping("/lista")
   public String mostrarLista(Model model) {
-    List<ProductoDTO> productoLista = productoService.obtenerProductos();
-    model.addAttribute("productos", productoLista);
-    return "productos";
+
+    try{
+      List<ProductoDTO> productoLista = productoService.obtenerProductos();
+      model.addAttribute("productos", productoLista);
+      return "productos";
+
+    } catch (IllegalStateException e) {
+      //Errores manuales (Aqui solo estamos mostrando el tipo de error en el navegador)
+      model.addAttribute("error", e.getMessage());
+      return "productos";
+    }catch (Exception e) {
+      //Excepcion general (sirve para to-do) (Lo mismo aqui pero con un error general)
+      model.addAttribute("error", e.getMessage());
+      return "productos";
+    }
   }
 
   /***
@@ -64,7 +68,8 @@ public class ProductoController {
           BindingResult result,
           Model model
   ) {
-    //Esto es para capturar o atrapar errores
+
+    try {
       if (result.hasErrors()) {
         model.addAttribute("error", "Error en envio de formulario");
         model.addAttribute("errores", result.getAllErrors());
@@ -72,14 +77,19 @@ public class ProductoController {
         return "formulario-producto";
       }
 
-    System.out.println(productoDTO);
-    //guardar
-    ProductoDTO nuevoProductoDTO = productoService.guardarProducto(productoDTO);
-    System.out.println(nuevoProductoDTO);
+      ProductoDTO nuevoProductoDTO = this.productoService.guardarProducto(productoDTO);
+      model.addAttribute("nuevo", nuevoProductoDTO);
 
-    model.addAttribute("nuevo", nuevoProductoDTO);
+      return "producto";
 
-    return "nuevo-producto";
+
+    } catch (IllegalStateException e) {
+      model.addAttribute("error", e.getMessage());
+      return "formulario-producto";
+    } catch (Exception e) {
+      //Exception general sirve para todo tipo de errpr
+      model.addAttribute("error", "Se genero un error");
+      return "formulario-producto";
+    }
   }
-
 }

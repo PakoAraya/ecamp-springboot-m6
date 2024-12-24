@@ -7,5 +7,5 @@ public interface ProductoService {
 
   List<ProductoDTO> obtenerProductos();
   ProductoDTO guardarProducto(ProductoDTO nuevoProductoDTO);
-
+  List<ProductoDTO> buscarProductoByNombre(String nombre);
 }
