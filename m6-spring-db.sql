@@ -17,7 +17,6 @@ VALUES
 ('Monitor', 'Monitor de 24 pulgadas Full HD', 200.00, true),
 ('Cargador', 'Cargador universal para laptops', 25.75, false);
 
-SELECT * FROM producto ;
 
 -- Creacion de tabla de usuarios
 /*
@@ -45,8 +44,51 @@ INSERT INTO usuario (nombre, email, edad, activo) VALUES
 ('Lewis Hamilton', 'lhamilton@ferrari.com', 32, true),
 ('Mariah Carey', 'mcarey@bootcamp.cl', 31, true),
 ('Karol G', 'karolg@bootcamp.cl', 28, true),
-('Taylor Swift', 'tswift@bootcamp.cl', 32, false);
+('Taylor Swift', 'tswift@bootcamp.cl', 32, false),
+('Milton Millas', 'mmillas@mclaren.com', 14, false),
+('Michael Bootas', 'mbottas@ferrari.com', 12, false),
+('Sergio Gonzalez', 'sgonzalez@bootcamp.cl', 10, true);
 
 SELECT * FROM usuario u ;
+
+SELECT * FROM usuario u 
+WHERE u.email like 'lhamilton@ferrari.com';
+
+SELECT count(*) FROM usuario u WHERE u.activo = TRUE; 
+
+SELECT * FROM usuario u 
+WHERE u.id = 1;
+
+CREATE TABLE categoria(
+    id serial PRIMARY KEY,
+    nombre varchar(100) UNIQUE NOT NULL
+);
+
+ALTER TABLE producto 
+    ADD COLUMN categoria_id BIGINT,
+    ADD CONSTRAINT fk_productos_categorias
+        FOREIGN KEY (categoria_id)
+        REFERENCES categoria(id);
+
+INSERT INTO categoria (nombre) VALUES
+('Electrodomesticos'),
+('Muebles'),
+('Computacion');
+
+UPDATE producto
+SET categoria_id = 3
+WHERE id IN (1,2,3,4,5);
+
+INSERT INTO producto (nombre, descripcion, precio, en_stock, categoria_id)
+VALUES
+('Silla', 'Silla de comedor', 200.00, TRUE, 2),
+('Mesa', 'Mesa de comedor', 80.50, TRUE, 2),
+('Comoda', 'Comoda para guardar ropa', 45.99, FALSE, 2),
+('Lavadora', 'Lavadora Samsung Epic IA', 450.00, TRUE, 1),
+('Refrigerador', 'Refrigerador Midea con IA', 500.75, FALSE, 1);
+
+SELECT * FROM categoria c;
+SELECT * FROM producto p ;
+
 
 
