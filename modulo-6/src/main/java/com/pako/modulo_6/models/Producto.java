@@ -29,6 +29,11 @@ public class Producto {
   @Column(name = "en_Stock", nullable = false)
   private boolean enStock;
 
+  //donde tenga la FK dejare la notacion many to one
+  @ManyToOne
+  @JoinColumn(name = "categoria_id", nullable = false)
+  private Categoria categoria;
+
   /***
    * Modelo que representa abstraccion de un producto
    *
@@ -53,6 +58,7 @@ public class Producto {
     this.descripcion = productoDTO.getDescripcion();
     this.precio = productoDTO.getPrecio();
     this.enStock = productoDTO.isEnStock();
+    this.categoria = new Categoria(productoDTO.getCategoriaDTO());
   }
 
   public Producto() {
@@ -97,6 +103,15 @@ public class Producto {
 
   public void setEnStock(boolean enStock) {
     this.enStock = enStock;
+  }
+
+  //Se agregan los getters y setters de la categoria
+  public Categoria getCategoria() {
+    return categoria;
+  }
+
+  public void setCategoria(Categoria categoria) {
+    this.categoria = categoria;
   }
 
   @Override

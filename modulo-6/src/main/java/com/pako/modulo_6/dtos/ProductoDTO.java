@@ -22,6 +22,7 @@ public class ProductoDTO {
   private double precio;
   private boolean enStock;
 
+  private CategoriaDTO categoriaDTO;
 
   public ProductoDTO() {
 
@@ -41,6 +42,8 @@ public class ProductoDTO {
     this.descripcion = producto.getDescripcion();
     this.precio = producto.getPrecio();
     this.enStock = producto.isEnStock();
+    this.categoriaDTO = producto.getCategoria() == null ? null : new CategoriaDTO(producto.getCategoria());
+    //Por si hay catregoria nula, de ja nula, si tiene informacion, recien ahi se crea el objeto.
   }
 
   public int getId() {
@@ -81,6 +84,14 @@ public class ProductoDTO {
 
   public void setEnStock(boolean enStock) {
     this.enStock = enStock;
+  }
+
+  public CategoriaDTO getCategoriaDTO() {
+    return categoriaDTO;
+  }
+
+  public void setCategoriaDTO(CategoriaDTO categoriaDTO) {
+    this.categoriaDTO = categoriaDTO;
   }
 
   @Override
