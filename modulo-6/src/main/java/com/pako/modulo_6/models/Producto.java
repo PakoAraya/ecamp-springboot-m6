@@ -31,7 +31,7 @@ public class Producto {
 
   //donde tenga la FK dejare la notacion many to one
   @ManyToOne
-  @JoinColumn(name = "categoria_id", nullable = false)
+  @JoinColumn(name = "categoria_id")
   private Categoria categoria;
 
   /***
