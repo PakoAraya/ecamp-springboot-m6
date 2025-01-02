@@ -1,5 +1,6 @@
 package com.pako.modulo_6.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.pako.modulo_6.dtos.ProductoDTO;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
@@ -30,8 +31,9 @@ public class Producto {
   private boolean enStock;
 
   //donde tenga la FK dejare la notacion many to one
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "categoria_id")
+  @JsonBackReference
   private Categoria categoria;
 
   /***

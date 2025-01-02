@@ -1,6 +1,7 @@
 package com.pako.modulo_6.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.pako.modulo_6.dtos.CategoriaDTO;
 import jakarta.persistence.*;
 
@@ -17,18 +18,19 @@ public class Categoria {
   private String nombre;
 
   //Traer productos relacionados de producto
-//  @OneToMany(mappedBy = "categoria")
-//  List<Producto> productoList;
+  @OneToMany(mappedBy = "categoria")
+  @JsonManagedReference
+  List<Producto> productoList;
 
   public Categoria(){}
 
   public Categoria(CategoriaDTO categoriaDTO) {
     this.id = categoriaDTO.getId();
     this.nombre = categoriaDTO.getNombre();
-//    this.productoList = categoriaDTO.getProductoDTOList()
-//            .stream()
-//            .map(productoDTO -> new Producto(productoDTO))
-//            .collect(Collectors.toList());
+    this.productoList = categoriaDTO.getProductoDTOList()
+            .stream()
+            .map(productoDTO -> new Producto(productoDTO))
+            .collect(Collectors.toList());
   }
 
   public int getId() {
@@ -47,13 +49,13 @@ public class Categoria {
     this.nombre = nombre;
   }
 
-//  public List<Producto> getProductoList() {
-//    return productoList;
-//  }
-//
-//  public void setProductoList(List<Producto> productoList) {
-//    this.productoList = productoList;
-//  }
+  public List<Producto> getProductoList() {
+    return productoList;
+  }
+
+  public void setProductoList(List<Producto> productoList) {
+    this.productoList = productoList;
+  }
 
   @Override
   public String toString() {

@@ -19,7 +19,7 @@ public class CategoriaServiceImpl implements CategoriaService {
   public List<CategoriaDTO> obtenerCategorias() {
     return this.categoriaRepositoryJPA.findAll()
             .stream()
-            .map(categoria -> new CategoriaDTO(categoria))
+            .map(categoria -> new CategoriaDTO(categoria, true))
             .collect(Collectors.toList());
   }
 }

@@ -1,6 +1,7 @@
 package com.pako.modulo_6.repositorios;
 
 import com.pako.modulo_6.models.Producto;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,6 +12,12 @@ import java.util.List;
 // Se recomienda a futuro eliminar esa clase.
 
 public interface ProductoRepositoryJPA extends JpaRepository<Producto, Integer> {
+
+  // Con la anotación @EntityGraph, podemos indicar que queremos traer la información de la categoría
+  // en la misma consulta que los productos evitando que se hagan 2 consultas y que se aplique un join
+  @EntityGraph(attributePaths = {"categoria"})
+  @Override
+  List<Producto> findAll();
 
   // Ejemplos de métodos de query desarrollado por nosotros
   // Las consultas generadas automáticamente por Spring Data JPA, como findByNombre y similares, son muy útiles

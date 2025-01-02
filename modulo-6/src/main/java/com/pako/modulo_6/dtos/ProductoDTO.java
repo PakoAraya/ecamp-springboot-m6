@@ -42,8 +42,18 @@ public class ProductoDTO {
     this.descripcion = producto.getDescripcion();
     this.precio = producto.getPrecio();
     this.enStock = producto.isEnStock();
-    this.categoriaDTO = producto.getCategoria() == null ? null : new CategoriaDTO(producto.getCategoria());
-    //Por si hay catregoria nula, de ja nula, si tiene informacion, recien ahi se crea el objeto.
+  }
+
+  public ProductoDTO(Producto producto, boolean include) {
+    this.id = producto.getId();
+    this.nombre = producto.getNombre();
+    this.descripcion = producto.getDescripcion();
+    this.precio = producto.getPrecio();
+    this.enStock = producto.isEnStock();
+    if (include){
+      this.categoriaDTO = producto.getCategoria() == null ? null : new CategoriaDTO(producto.getCategoria(),false);
+      //Por si hay catregoria nula, de ja nula, si tiene informacion, recien ahi se crea el objeto.
+    }
   }
 
   public int getId() {

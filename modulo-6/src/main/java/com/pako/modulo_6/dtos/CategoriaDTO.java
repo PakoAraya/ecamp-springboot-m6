@@ -23,6 +23,17 @@ public class CategoriaDTO {
 //            .collect(Collectors.toList());
   }
 
+  public CategoriaDTO(Categoria categoria, boolean include) {
+    this.id = categoria.getId();
+    this.nombre = categoria.getNombre();
+    if(include){
+      this.productoDTOList = categoria.getProductoList()
+              .stream()
+              .map(producto -> new ProductoDTO(producto, false))
+              .collect(Collectors.toList());
+    }
+  }
+
   public int getId() {
     return id;
   }
@@ -39,13 +50,13 @@ public class CategoriaDTO {
     this.nombre = nombre;
   }
 
-//  public List<ProductoDTO> getProductoDTOList() {
-//    return productoDTOList;
-//  }
-//
-//  public void setProductoDTOList(List<ProductoDTO> productoDTOList) {
-//    this.productoDTOList = productoDTOList;
-//  }
+  public List<ProductoDTO> getProductoDTOList() {
+    return productoDTOList;
+  }
+
+  public void setProductoDTOList(List<ProductoDTO> productoDTOList) {
+    this.productoDTOList = productoDTOList;
+  }
 
   @Override
   public String toString() {
