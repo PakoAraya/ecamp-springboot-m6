@@ -17,6 +17,7 @@ VALUES
 ('Monitor', 'Monitor de 24 pulgadas Full HD', 200.00, true),
 ('Cargador', 'Cargador universal para laptops', 25.75, false);
 
+SELECT * FROM producto ;
 
 -- Creacion de tabla de usuarios
 /*
@@ -89,6 +90,20 @@ VALUES
 
 SELECT * FROM categoria c;
 SELECT * FROM producto p ;
+
+-- Creacion de tabla para Spring Security
+CREATE TABLE usuario_login(
+	id 			serial PRIMARY KEY,
+	username	varchar(50) UNIQUE NOT NULL,
+	password 	varchar(100) UNIQUE NOT NULL,
+	role			varchar(20) NOT null 
+);
+
+INSERT INTO usuario_login  (username, PASSWORD, role)
+VALUES ('admin', 'admin123', 'ADMIN'),
+			 ('user', 'user123', 'USER');
+
+SELECT * FROM usuario_login ;
 
 
 
