@@ -1,5 +1,6 @@
 package com.pako.modulo_6.services;
 
+import com.pako.modulo_6.dtos.UsuarioLoginDTO;
 import com.pako.modulo_6.models.UsuarioLogin;
 import com.pako.modulo_6.repositorios.UsuarioLoginRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -18,6 +20,9 @@ public class UsuarioLoginService implements UserDetailsService {
 
   @Autowired
   private UsuarioLoginRepositoryJPA usuarioLoginRepository;
+
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   /**
    * metodo que junta la informacion necesario para que
@@ -39,4 +44,26 @@ public class UsuarioLoginService implements UserDetailsService {
     //return
     return new User(usuarioLogin.getUsername(), usuarioLogin.getPassword(), Collections.singletonList(authority));
   }
+
+  public UsuarioLoginDTO addUser(UsuarioLoginDTO usuarioLoginDTO) throws Exception {
+    //valida si el usuario ya existe
+    if (this.usuarioLoginRepository.findByUsername(usuarioLoginDTO.getUsername()).isPresent()){
+      throw  new Exception("Usuario ya existe ");
+    }
+    //encriptar contraseña
+    String encodedPassword=passwordEncoder.encode(usuarioLoginDTO.getPassword());
+
+    UsuarioLogin nuevoUsuario= new UsuarioLogin();
+
+    nuevoUsuario.setUsername(usuarioLoginDTO.getUsername());
+    nuevoUsuario.setPassword(encodedPassword);
+    nuevoUsuario.setRole(usuarioLoginDTO.getRole());
+    this.usuarioLoginRepository.save(nuevoUsuario);
+
+    UsuarioLoginDTO  nuevoUsuarioDTO= new UsuarioLoginDTO();
+    nuevoUsuarioDTO.setUsername(nuevoUsuarioDTO.getUsername());
+    nuevoUsuarioDTO.setRole(nuevoUsuarioDTO.getRole());
+    return  nuevoUsuarioDTO;
+  }
+
 }

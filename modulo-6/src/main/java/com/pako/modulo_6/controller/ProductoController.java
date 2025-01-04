@@ -3,10 +3,12 @@ package com.pako.modulo_6.controller;
 import com.pako.modulo_6.dtos.ProductoDTO;
 import com.pako.modulo_6.interfaces.ProductoService;
 import com.pako.modulo_6.services.ProductoServiceImpl;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,6 +57,8 @@ public class ProductoController {
    * @return retornamos el dto a usar en formulario, template del formulario
    */
 
+  @PreAuthorize("hasRole('ADMIN')") //Esto asegura que solo el admin puede acceder a esta ruta e ingresar productos
+  //@Secured({"ROLE_ADMIN","ROLE_SUPPORT"}) //Esto asegura que solo el admin puede acceder a esta ruta e ingresar productos y tambien otros roles
   @GetMapping("/formulario")
   public String formulario(Model model) {
     model.addAttribute("productoDTO", new ProductoDTO());
@@ -84,9 +88,14 @@ public class ProductoController {
 
 
     } catch (IllegalStateException e) {
+      System.out.println(e);
       model.addAttribute("error", e.getMessage());
       return "formulario-producto";
+    } catch (ConstraintViolationException e) {
+      model.addAttribute("error", e);
+      return "formulario-producto";
     } catch (Exception e) {
+      System.out.println(e);
       //Exception general sirve para todo tipo de errpr
       model.addAttribute("error", "Se genero un error");
       return "formulario-producto";

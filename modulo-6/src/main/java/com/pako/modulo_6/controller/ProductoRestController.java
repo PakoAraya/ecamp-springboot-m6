@@ -3,13 +3,13 @@ package com.pako.modulo_6.controller;
 
 import com.pako.modulo_6.dtos.CategoriaDTO;
 import com.pako.modulo_6.dtos.ProductoDTO;
+import com.pako.modulo_6.dtos.UsuarioLoginDTO;
 import com.pako.modulo_6.interfaces.CategoriaService;
 import com.pako.modulo_6.interfaces.ProductoService;
+import com.pako.modulo_6.services.UsuarioLoginService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +22,9 @@ public class ProductoRestController {
 
   @Autowired
   private CategoriaService categoriaService;
+
+  @Autowired
+  private UsuarioLoginService usuarioLoginService;
 
   @GetMapping("/categoria/lista")
   public List<CategoriaDTO> mostrarCategorias(){
@@ -36,5 +39,16 @@ public class ProductoRestController {
   @PostMapping("/guardar")
   public ProductoDTO guardarProducto(ProductoDTO productoDTO){
     return this.productoService.guardarProducto(productoDTO);
+  }
+
+  @PostMapping("/user/add")
+  public UsuarioLoginDTO add(@Valid @RequestBody UsuarioLoginDTO usuarioDTO) {
+    try {
+      return usuarioLoginService.addUser(usuarioDTO);
+    } catch (IllegalArgumentException e) {
+      return new UsuarioLoginDTO();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 }
