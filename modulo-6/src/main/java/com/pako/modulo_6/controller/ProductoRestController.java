@@ -62,7 +62,8 @@ public class ProductoRestController {
   }
 
   @PostMapping("/guardar")
-  public ResponseEntity guardarProducto(@RequestBody ProductoDTO productoDTO) {
+  public ResponseEntity<?> guardarProducto(@RequestBody ProductoDTO productoDTO) {
+    //El <?> se usa para que pueda devolver cualquier tipo de dato
     try {
       return ResponseEntity.status(HttpStatus.CREATED).body(this.productoService.guardarProducto(productoDTO));
     } catch (IllegalStateException e) {
