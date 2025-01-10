@@ -5,7 +5,9 @@ import com.pako.modulo_6.interfaces.ProductoService;
 import com.pako.modulo_6.models.Producto;
 import com.pako.modulo_6.repositorios.ProductoRepositoryJPA;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ import java.util.stream.Collectors;
 public class ProductoServiceImpl implements ProductoService {
 
   @Autowired
+  private Validator validator;
+
+  @Autowired
   ProductoRepositoryJPA productoRepositoryJPA;
 
   @Override //Este metodo cambia usando JPA y el metodo FINDALL
@@ -28,6 +33,9 @@ public class ProductoServiceImpl implements ProductoService {
 //    User userAuth = (User) principal;
 //    System.out.println("Usuario que esta en sesion");
 //    System.out.println(userAuth.getUsername());
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    System.out.println(authentication.getName());
 
     List<Producto> productos = this.productoRepositoryJPA.findAll();
 

@@ -10,7 +10,7 @@ public class UsuarioLoginDTO {
   @NotEmpty(message = "La contraseña no puede estar vacía")
   private String password;
 
-  @NotEmpty(message = "ROl no puede estar vacío")
+  //@NotEmpty(message = "ROl no puede estar vacío") Modificado por JWT
   private String role;
 
   public String getUsername() {

@@ -1,6 +1,5 @@
 package com.pako.modulo_6.controller;
 
-
 import com.pako.modulo_6.dtos.CategoriaDTO;
 import com.pako.modulo_6.dtos.ProductoDTO;
 import com.pako.modulo_6.dtos.UsuarioLoginDTO;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.pako.modulo_6.jwt.JwtTokenService;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +29,9 @@ public class ProductoRestController {
 
   @Autowired
   private UsuarioLoginService usuarioLoginService;
+
+  @Autowired
+  private JwtTokenService jwtTokenService;
 
   @GetMapping("/categoria/lista")
   public List<CategoriaDTO> mostrarCategorias(){

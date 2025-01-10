@@ -66,4 +66,18 @@ public class UsuarioLoginService implements UserDetailsService {
     return  nuevoUsuarioDTO;
   }
 
+  /**
+   * Autentica un usuario por su nombre de usuario y contraseña
+   */
+  public UsuarioLoginDTO authenticate(String username, String password) {
+    UsuarioLogin usuarioLogin = this.usuarioLoginRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+    if (passwordEncoder.matches(password, usuarioLogin.getPassword())) {
+      UsuarioLoginDTO usuarioLoginDTO = new UsuarioLoginDTO();
+      usuarioLoginDTO.setUsername(usuarioLogin.getUsername());
+      usuarioLoginDTO.setRole(usuarioLogin.getRole());
+      return usuarioLoginDTO;
+    }
+    throw new UsernameNotFoundException("Credenciales inválidas");
+  }
 }
